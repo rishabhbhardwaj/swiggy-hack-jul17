@@ -27,8 +27,8 @@ object Test {
 
     println(System.currentTimeMillis() - t1)
 
-    println(((jsonBody \ "rows" \ 0).get \ "elements" \ 0 \ "duration" \ "text").get.toString().split(" " +
-      "")(0).replaceAll("\"","").toDouble)
+    println(Math.ceil((((jsonBody \ "rows" \ 0).get \ "elements" \ 0 \ "duration" \ "value").get.toString
+    ().toDouble)/60.0))
 
 
   }

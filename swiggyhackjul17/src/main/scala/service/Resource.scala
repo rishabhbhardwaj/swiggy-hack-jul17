@@ -59,8 +59,8 @@ class Resource {
 
     val jsonBody = Json.parse(response.body)
 
-    ((jsonBody \ "rows" \ 0).get \ "elements" \ 0 \ "duration" \ "text").get.toString().split(" " +
-      "")(0).replaceAll("\"", "").toDouble
+    Math.ceil((((jsonBody \ "rows" \ 0).get \ "elements" \ 0 \ "duration" \ "value").get.toString
+    ().toDouble)/60.0)
   }
 }
 
