@@ -5,8 +5,8 @@ package service
   * Created by Rishabh on 15/07/17.
   */
 
-import javax.ws.rs._
 import javax.ws.rs.core.{MediaType, Response}
+import javax.ws.rs.{QueryParam, _}
 
 import db.DBClient
 import play.api.libs.json.Json
@@ -23,18 +23,19 @@ class Resource {
   @Produces(Array(MediaType.APPLICATION_JSON))
   def getProfile(@QueryParam("pickUpLat") pickUpLat: Double,
                  @QueryParam("pickUpLng") pickUpLng: Double,
-                 @QueryParam("restaurantId") restaurantId: Int): Response = {
+                 @QueryParam("restLat") restLat: Double,
+                 @QueryParam("restLng") restLng: Double): Response = {
 
-    val (restLat, restLng) = getRestaurantLocation(restaurantId)
     val time = getTravelTime(pickUpLat, pickUpLng, restLat, restLng)
+    println("..Got time = " + time)
 
     val json =
       s"""{
-        |"status": "ok",
-        |"bestPickUpTime": $time
-        |}""".stripMargin
+         |"status": "ok",
+         |"bestPickUpTime": $time
+         |}""".stripMargin
 
-
+    println("...json: " + json)
     Response.status(200).entity(json)
       .header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
       .header("Access-Control-Allow-Origin", "*")
@@ -51,7 +52,7 @@ class Resource {
 
     val response: HttpResponse[String] = Http(url)
       .option(HttpOptions.allowUnsafeSSL)
-//      .param("units", "imperial")
+      //      .param("units", "imperial")
       .param("origins", s"$lat1,$lng2")
       .param("destinations", s"$lat2,$lng2")
       .param("key", "AIzaSyAXoEZxb8sAHKDx-9KcRCfq_U-hEami2bo")
@@ -59,8 +60,10 @@ class Resource {
 
     val jsonBody = Json.parse(response.body)
 
+    println("..time.. body:  " + jsonBody)
+
     Math.ceil((((jsonBody \ "rows" \ 0).get \ "elements" \ 0 \ "duration" \ "value").get.toString
-    ().toDouble)/60.0)
+    ().toDouble) / 60.0)
   }
 }
 
