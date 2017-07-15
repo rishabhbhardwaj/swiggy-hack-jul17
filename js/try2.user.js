@@ -46,19 +46,19 @@ function populateSelectOptions(){
 
 function getPickUpTimeValue(){
 	
-	//var xmlHttp = new XMLHttpRequest();
+	var xmlHttp = new XMLHttpRequest();
 	var url = 'http://172.16.120.154:8082/pickup/?pickUpLat=18.22&pickUpLng=19.22&restaurantId=22';
-    //xmlHttp.open( "GET", url, false ); // false for synchronous request
-    //xmlHttp.send( null );
-	//console.log(xmlHttp.responseText);
-    //console.log(xmlHttp.responseText.bestPickUpTime);
-	//return xmlHttp.responseText.bestPickUpTime;
+    xmlHttp.open( "GET", url, false ); // false for synchronous request
+    xmlHttp.send( null );
+	console.log(xmlHttp.responseText);
+    console.log(xmlHttp.responseText.bestPickUpTime);
+	return xmlHttp.responseText.bestPickUpTime;
 	
-	$.get( url, function( data ) {
+	/*$.get( url, function( data ) {
 	console.log(data);
 	  //alert( "Data Loaded: " + data );
 	});
-	return 1050;
+	return 1050;*/
 }
 
 function openNav() {
