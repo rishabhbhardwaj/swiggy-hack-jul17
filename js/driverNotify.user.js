@@ -3,7 +3,6 @@
 // @include     http://example.com
 // @require     http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js
 // @require     https://cdn.pubnub.com/sdk/javascript/pubnub.4.12.0.js
-// @require     https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.js
 // @grant       GM_addStyle
 // ==/UserScript==
 /*- The @grant directive is needed to work around a design change
@@ -11,6 +10,16 @@
 */
 //--- Use jQuery to add the form in a "popup" dialog.
 
+function tempAlert(msg,duration)
+{
+ var el = document.createElement("div");
+ el.setAttribute("style","position:absolute;top:40%;left:20%;background-color:white;");
+ el.innerHTML = msg;
+ setTimeout(function(){
+  el.parentNode.removeChild(el);
+ },duration);
+ document.body.appendChild(el);
+}
 
 console.log("Subscribe Driver Notification");
 
@@ -33,7 +42,8 @@ console.log("Connected");
         message: function(message) {
           var newMsg = message;
           console.log("New Message! ", newMsg.message);
-          $.notify(newMsg.message.text);
+          // $.notify(newMsg.message.text);
+          tempAlert(newMsg.message, 10000);
         },
         presence: function(presenceEvent) {
             // handle presence
