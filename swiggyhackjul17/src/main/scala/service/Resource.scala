@@ -53,7 +53,7 @@ class Resource {
     val response: HttpResponse[String] = Http(url)
       .option(HttpOptions.allowUnsafeSSL)
       //      .param("units", "imperial")
-      .param("origins", s"$lat1,$lng2")
+      .param("origins", s"$lat1,$lng1")
       .param("destinations", s"$lat2,$lng2")
       .param("key", "AIzaSyAXoEZxb8sAHKDx-9KcRCfq_U-hEami2bo")
       .asString

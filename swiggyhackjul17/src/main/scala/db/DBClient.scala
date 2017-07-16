@@ -3,12 +3,16 @@ package db
 
 import java.sql.{Connection, DriverManager}
 
+import scala.collection.mutable.ListBuffer
+
 /**
   *
   * Created by Rishabh on 15/07/17.
   */
 
 class DBClient {
+
+
 
   val driver = "com.mysql.jdbc.Driver"
   val url = "jdbc:mysql://localhost/swiggy_hack_jul17?useSSL=false"
@@ -37,6 +41,22 @@ class DBClient {
     } else {
       (0.0, 0.0)
     }
+  }
+
+  def getUserLoc(): (List[(Double, Double)]) = {
+
+    Class.forName(driver)
+    val userLat: ListBuffer[(Double, Double)] = ListBuffer.empty[(Double, Double)]
+
+    val query = s"""select ulat, ulng from usertopu order by id"""
+    val statement = connection.createStatement()
+    val resultSet = statement.executeQuery(query)
+    while (resultSet.next()) {
+      val lat = resultSet.getDouble("ulat")
+      val lng = resultSet.getDouble("ulng")
+      userLat += Tuple2(lat, lng)
+    }
+    userLat.toList
   }
 }
 
